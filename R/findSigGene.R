@@ -22,6 +22,7 @@
 #' \emph{C++} implementation/optimisation by Renaud Gaujoux 
 #' @cite Shen-Orr2010
 #' @useDynLib csSAM
+#' @export
 findSigGene <- function(rhat, csSAMData, alternative = c('two.sided', 'less', 'greater'), version = getOption('csSAM.siggene.version', 2)) {
 	
 	# version 1 only computed two.sided
