@@ -31,19 +31,20 @@
 #' @cite Shen-Orr2010
 #' @export 
 #' 
-csSamWrapper <- function(G,cc,y, covariates = NULL, nperms = 200,alternative = 'two.sided',standardize=TRUE,medianCenter=TRUE, logRm =FALSE,logBase = 2,nonNeg=TRUE,fileName='csSAMout.pdf') {
+csSamWrapper <- function(G,cc,y, covariates = NULL, nperms = 200,alternative = 'two.sided',standardize=TRUE,medianCenter=TRUE, 
+                         logRm =FALSE,logBase = 2,nonNeg=TRUE,fileName='csSAMout.pdf') {
 
   # run csSAM
   csfit <- csSAMfit(x = t(G), cc = t(cc), y = y, covariates = covariates, nperms = nperms
             , alternative = alternative, standardize = standardize, medianCenter = medianCenter
             , logRm = logRm, logBase = logBase, nonNeg = nonNeg)
-  # run SAM
-  # tt.sam <- runSAM(G, y)
-  # fdr.sam <- fdrSAM(G, y, nperms=nperms, tt.sam, alternative)
+  
+  # run SAM: not controlling for covariates
+  tt.sam <- runSAM(G, y)
+  fdr.sam <- fdrSAM(G, y, nperms=nperms, tt.sam, alternative)
   
   sigGene <- csTopTable(csfit, alternative = alternative, merge = TRUE)
 
-  # plotCsSAM(csfit, fdr.sam, alternative, fileName = fileName)
-  return(list(csSAM = basisfit(csfit), sigGene.csSAM = sigGene, fileName = fileName)) # SAM = fdr.sam, 
-  
+  plotCsSAM(csfit, fdr.sam, alternative, fileName = fileName)
+  return(list(csSAM = basisfit(csfit), sigGene.csSAM = sigGene, fileName = fileName, SAM = fdr.sam))
 }
